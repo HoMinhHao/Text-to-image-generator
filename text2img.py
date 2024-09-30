@@ -1,7 +1,7 @@
 import torch
-from diffusers import StableDiffusionPipline
+from diffusers import StableDiffusionPipeline
 
-rand_seed = 42
+rand_seed = torch.manual_seed(42)
 NUMBER_INFERENCE_STEPS = 25
 GUIDANCE_SCALE = 0.5
 HEIGHT = 512
@@ -9,22 +9,23 @@ WIDTH = 512
 
 model_list=['nota-ai/bk-sdm-small',
             'CompVis/stable-diffusion-v1-4',
-            'stabilityai/sdxl-turbo']
+            'stabilityai/sdxl-turbo',
+            'stabilityai/stable-diffusion-xl-base-1.0']
 
-def create_pipeline(model_name, device):
-    pipeline= StableDiffusionPipline(
+def create_pipeline(model_name, dtype, device):
+    pipeline= StableDiffusionPipeline.from_pretrained(
         model_name,
-        torch_dtype=torch.float16,
+        torch_dtype=dtype,
         use_safetensors=True
     ).to(device)
     return pipeline
 
-def generate(model_name=model_list[0], device='cpu'):
+def generate(model_name=model_list[3], device='cpu'):
     if torch.cuda.is_available():
-        pipeline=create_pipeline(model_name, device='cuda')
+        pipeline=create_pipeline(model_name, torch.float16, device='cuda')
         print('Using CUDA')
     else:
-        pipeline=create_pipeline(model_name, device)
+        pipeline=create_pipeline(model_name, torch.float32, device)
         print('Using CPU')
     return pipeline
 
