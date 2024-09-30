@@ -3,7 +3,7 @@ from text2img import *
 
 app=Flask(__name__)
 
-SAVE_IMAGE_PATH='result/output.jpg'
+SAVE_IMAGE_PATH='static/output.jpg'
 
 pipeline=generate()
 

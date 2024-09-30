@@ -20,7 +20,7 @@ def create_pipeline(model_name, dtype, device):
     ).to(device)
     return pipeline
 
-def generate(model_name=model_list[3], device='cpu'):
+def generate(model_name=model_list[1], device='cpu'):
     if torch.cuda.is_available():
         pipeline=create_pipeline(model_name, torch.float16, device='cuda')
         print('Using CUDA')
